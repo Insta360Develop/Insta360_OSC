@@ -1,6 +1,6 @@
 # Insta360 OSC Get-Started
 
-## [中文文档](READM_zh.md)
+## [中文文档](README_zh.md)
 
 ### Overview
 **Insta360 OSC is implemented based on [Google OSC](https://developers.google.com/streetview/open-spherical-camera)**
