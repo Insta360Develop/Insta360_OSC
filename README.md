@@ -123,7 +123,7 @@ X-XSRF-Protected: 1
 	}
 }
 ```
-- After successfully connected to the camera，execute  `camera.getOptions` to know if the camera firmware support on-device stitching.
+After successfully connected to the camera，execute  `camera.getOptions` to know if the camera firmware support on-device stitching.
 
 ```
 {
@@ -149,8 +149,6 @@ If the on-device stitching is supported, the response will be like below.. Other
   }
 }
 ```
-
-
 
 `iso`:  value of current iso
 `isoSupport`: list of supported iso values
