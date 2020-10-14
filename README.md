@@ -139,8 +139,6 @@ X-XSRF-Protected: 1
 
 If the on-device stitching is supported, the response will be like below.. Otherwise, the response may contain error or `photoStitchingSupport` only has value `none`.
 
-如果相机支持机内拼接，则会正确返回如下结果，此时可根据您的业务需求选择是否使用此功能。如果**返回错误结果**或`photoStitchingSupport`返回只有`none`，则代表相机不支持机内拼接功能
-
 ```
 {
   "results": {
