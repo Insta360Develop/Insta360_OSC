@@ -41,9 +41,12 @@ X-XSRF-Protected: 1
 	"apiLevel": [
 		2
 	],
+	"_sensorModuleType": "4K",
 	"_vendorVersion": "v1.1_build1"
 }
 ```
+
+`_sensorModuleType` :  Indicates the current lens module type of the camera, only supported on ONE  R. Available values are `4K`, `4K_Selfie`,`Dual_Fisheye`,`Leica`,`Leica_Selfie`. The `Selfie` suffix indicates the lens is facing the same direction with touch screen. 
 
 - Send a POST request to  `/osc/state` to get state of the camera device.
 
@@ -87,9 +90,7 @@ X-XSRF-Protected: 1
           "hdrSupport",
           "hdr",
           "totalSpace",
-          "remainingSpace",
-          "photoStitchingSupport",
-          "photoStitching"
+          "remainingSpace"
       ]
   }
 }
@@ -105,9 +106,7 @@ X-XSRF-Protected: 1
            "hdrSupport":[hdr, off],
            "hdr":"off",
            "totalSpace":"31906594816",
-           "remainingSpace":"10597040128",
-           "photoStitchingSupport":["none","ondevice"],
-           "photoStitching":"none"
+           "remainingSpace":"10597040128"
       }
   }
 }
@@ -124,6 +123,37 @@ X-XSRF-Protected: 1
 	}
 }
 ```
+- After successfully connected to the camera，execute  `camera.getOptions` to know if the camera firmware support on-device stitching.
+
+```
+{
+  "name":"camera.getOptions",
+  "parameters": {
+      "optionNames": [
+          "photoStitchingSupport",
+          "photoStitching"
+      ]
+  }
+}
+```
+
+If the on-device stitching is supported, the response will be like below.. Otherwise, the response may contain error or `photoStitchingSupport` only has value `none`.
+
+如果相机支持机内拼接，则会正确返回如下结果，此时可根据您的业务需求选择是否使用此功能。如果**返回错误结果**或`photoStitchingSupport`返回只有`none`，则代表相机不支持机内拼接功能
+
+```
+{
+  "results": {
+      "options": {
+           "photoStitchingSupport":["none","ondevice"],
+           "photoStitching":"none"
+      }
+  }
+}
+```
+
+
+
 `iso`:  value of current iso
 `isoSupport`: list of supported iso values
 `hdrSpport`:  list of supported hdr values
@@ -138,26 +168,28 @@ X-XSRF-Protected: 1
 #### setOptions
 - use `camera.setOptions` command to set params
 
-- set HDR mode
+- set HDR mode (Three  original images will be returned upon `takePicture` successfully executed)
 ```
 {
 	"name": "camera.setOptions",
 	"parameters": {
 		"options": {
+			"captureMode":"image",
 			"hdr": "hdr",
-			"photoStitching": "none"
+			"photoStitching": "none" //add this option only when on-device stitching is supported
 		}
 	}
 }
 ```
-- set HDR mode with **ondevice-stitching** ：
+- set HDR mode with **ondevice-stitching** ：(One stitched image with HDR effect will be returned upon `takePicture` successully executed)
 ```
 {
 	"name": "camera.setOptions",
 	"parameters": {
 		"options": {
+			"captureMode":"image",
 			"hdr": "hdr",
-			"photoStitching": "ondevice"
+			"photoStitching": "ondevice" //add this option only when on-device stitching is supported
 		}
 	}
 }

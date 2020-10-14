@@ -38,10 +38,11 @@ X-XSRF-Protected: 1
 	"apiLevel": [
 		2
 	],
+    "_sensorModuleType": "4K",
 	"_vendorVersion": "v1.1_build1"
 }
 ```
-
+`_sensorModuleType`模组类型目前仅ONER型号支持，类型包括`4K/4K_Selfie` `Dual_Fisheye` `Leica/Leica_Selfie`,`Selfie`表示镜头为自拍方向（与触摸屏在同一方向）
 - 使用POST `/osc/state` 获取设备状态，建议不要超过1次/秒
 `/osc/state` 返回示例
 ```
@@ -72,9 +73,7 @@ X-XSRF-Protected: 1
           "hdrSupport",
           "hdr",
           "totalSpace",
-          "remainingSpace",
-          "photoStitchingSupport",
-          "photoStitching"
+          "remainingSpace"
       ]
   }
 }
@@ -89,9 +88,7 @@ X-XSRF-Protected: 1
            "hdrSupport":[hdr, off],
            "hdr":"off",
            "totalSpace":"31906594816",
-           "remainingSpace":"10597040128",
-           "photoStitchingSupport":["none","ondevice"],
-           "photoStitching":"none"
+           "remainingSpace":"10597040128"
       }
   }
 }
@@ -107,6 +104,29 @@ X-XSRF-Protected: 1
 	}
 }
 ```
+- 每次成功连接相机时，执行 `camera.getOptions` 判断相机是否支持机内拼接功能
+```
+{
+  "name":"camera.getOptions",
+  "parameters": {
+      "optionNames": [
+          "photoStitchingSupport",
+          "photoStitching"
+      ]
+  }
+}
+```
+如果相机支持机内拼接，则会正确返回如下结果，此时可根据您的业务需求选择是否使用此功能。如果**返回错误结果**或`photoStitchingSupport`返回只有`none`，则代表相机不支持机内拼接功能
+```
+{
+  "results": {
+      "options": {
+           "photoStitchingSupport":["none","ondevice"],
+           "photoStitching":"none"
+      }
+  }
+}
+```
 **`iso`表示当前iso值
 `isoSupport`列出所有支持的iso值
 `hdrSpport`列出hdr选项
@@ -120,30 +140,29 @@ X-XSRF-Protected: 1
 ### 拍照
 #### setOptions
 - 使用`camera.setOptions` 设置参数
-`shots` 表示拍摄张数(目前只能是3张) `increment`表示每一张的EV间隔值，一般`increment`的值为2,表示拍摄的3张原片分别为-2ev,0ev,2ev。
 
-
-
-- 拍摄HDR照片
+- 拍摄HDR照片（拍摄完成后会有三张双鱼眼图片，需要在app中进行HDR合成和全景拼接）
 ```
 {
 	"name": "camera.setOptions",
 	"parameters": {
 		"options": {
+			"captureMode":"image",
 			"hdr": "hdr",
-			"photoStitching": "none"
+			"photoStitching": "none" //如果相机不支持机内拼接功能，请不要添加此参数
 		}
 	}
 }
 ```
-- 拍摄***机内拼接*** HDR照片命令如下：
+- 拍摄***机内拼接*** HDR照片命令如下：（拍摄完成后会返回一张进行过HDR合成及拼接的全景图片）
 ```
 {
 	"name": "camera.setOptions",
 	"parameters": {
 		"options": {
+			"captureMode":"image",
 			"hdr": "hdr",
-			"photoStitching": "ondevice"
+			"photoStitching": "ondevice"  //如果相机不支持机内拼接功能，请不要添加此参数
 		}
 	}
 }
