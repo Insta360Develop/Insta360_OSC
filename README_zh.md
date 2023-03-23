@@ -1,7 +1,7 @@
 # Insta360 OSC 使用文档
 ### 概览
 **本文档基于[Google OSC](https://developers.google.com/streetview/open-spherical-camera)规范编写**
-使用Insta360 ONE X、ONE R时，设备连接到相机WiFi热点，此时相机的IP地址：192.168.42.1
+使用Insta360 ONE X、X2、X3、ONE R、ONE RS时，设备连接到相机WiFi热点，此时相机的IP地址：192.168.42.1
 **强烈建议** ： 所有 `osc/commands` 命令收到回复之后再发送下一条
 
 - 发送请求时请附带请求头
@@ -12,7 +12,7 @@ Content-Length: {CONTENT_LENGTH}
 X-XSRF-Protected: 1
 ```
 
-### 获取相机状态
+### 获取相机信息
 - 使用GET `/osc/info` 获取设备信息，建议不要超过1次/秒
 ```
 {
@@ -63,34 +63,172 @@ X-XSRF-Protected: 1
 
 - 使用POST `/osc/commands/execute` 执行 `camera.getOptions` 获取相机的特性
 `camera.getOptions` 参数示例：
-```
+```json
 {
   "name":"camera.getOptions",
   "parameters": {
       "optionNames": [
           "iso",
           "isoSupport",
-          "hdrSupport",
+    "shutterSpeed",
+    "shutterSpeedSupport",
           "hdr",
+          "hdrSupport",
           "totalSpace",
-          "remainingSpace"
+          "remainingSpace",
+          "photoStitching",
+          "photoStitchingSupport",
+          "captureInterval",
+          "captureIntervalSupport",
+          "captureMode",
+          "_videoType",
+          "_videoTypeSupport",
+          "_timelapseResolution",
+          "_timelapseResolutionSupport",
+          "_timelapseInterval",
+          "_timelapseIntervalSupport",
+          "exposureProgram",
+          "exposureDelay",
+          "exposureDelaySupport",
+          "_topBottomCorrection",
+          "whiteBalance",
+          "whiteBalanceSupport",
+          "_dateTime",
+          "_MuteEnable",
+          "_batteryCapacity",
+          "_sysTimestamp"
       ]
   }
 }
 ```
 `camera.getOptions` 正确返回示例：
-```
+```json
 {
-  "results": {
-      "options": {
-           "iso": 200,
-           "isoSupport": [100, 200, 400, 800, 1600],
-           "hdrSupport":[hdr, off],
-           "hdr":"off",
-           "totalSpace":"31906594816",
-           "remainingSpace":"10597040128"
-      }
-  }
+    "name": "camera.getOptions",
+    "state": "done",
+    "results": {
+        "options": {
+            "iso": 100,
+            "isoSupport": [
+                0,
+                100,
+                125,
+                160,
+                200,
+                250,
+                320,
+                400,
+                500,
+                640,
+                800,
+                1000,
+                1250,
+                1600,
+                2000,
+                2500,
+                3200
+            ],
+            "shutterSpeed": 0.001000,
+            "shutterSpeedSupport": [
+                0,
+                120,
+                100,
+                80,
+                60,
+                50,
+                40,
+                30,
+                15,
+                8,
+                2,
+                1,
+                0.500000,
+                0.200000,
+                0.100000,
+                0.066660,
+                0.033330,
+                0.020000,
+                0.016660,
+                0.010000,
+                0.008330,
+                0.002000,
+                0.001000,
+                0.000500,
+                0.000250,
+                0.000125
+            ],
+            "hdr": "off",
+            "hdrSupport": [
+                "off",
+                "hdr"
+            ],
+            "totalSpace": 0,
+            "remainingSpace": 0,
+            "photoStitching": "none",
+            "photoStitchingSupport": [
+                "none",
+                "ondevice"
+            ],
+            "captureInterval": 3000,
+            "captureIntervalSupport": {
+                "minInterval": 3,
+                "maxInterval": 120
+            },
+            "captureMode": "image",
+            "_videoType": "normal",
+            "_videoTypeSupport": [
+                "normal",
+                "timelapse"
+            ],
+            "_timelapseResolution": "5.7K",
+            "_timelapseResolutionSupport": [
+                "5.7K",
+                "8K"
+            ],
+            "_timelapseInterval": 4000,
+            "_timelapseIntervalSupport": [
+                200,
+                500,
+                1000,
+                2000,
+                4000,
+                10000,
+                30000,
+                60000,
+                120000
+            ],
+            "exposureProgram": 2,
+            "exposureDelay": 0,
+            "exposureDelaySupport": [
+                0,
+                3,
+                5,
+                10,
+                15,
+                0
+            ],
+            "_topBottomCorrection": {
+                "_topBottomCorrection": 0
+            },
+            "whiteBalance": "auto",
+            "whiteBalanceSupport": [
+                "auto",
+                "incandescent",
+                "fluorescent",
+                "daylight",
+                "cloudy-daylight"
+            ],
+            "_dateTime": "2023:03:23 16:05:41",
+            "_MuteEnable": {
+                "_MuteEnable": 0
+            },
+            "_batteryCapacity": {
+                "powerType": 1,
+                "powerLevel": 100
+            },
+            "_sysTimestamp": 60427274
+        }
+    }
 }
 ```
 `camera.getOptions` 参数错误返回结果:
@@ -129,12 +267,35 @@ X-XSRF-Protected: 1
 ```
 **`iso`表示当前iso值
 `isoSupport`列出所有支持的iso值
+`shutterSpeed`
+`shutterSpeedSupport`
+`aperture`
 `hdrSpport`列出hdr选项
 `hdr`显示当前HDR设置值
 `totalSpace`表示内存卡总容量/Byte
 `remainingSpace`表示剩余存储容量/Byte
 `photoStitchingSupport`列出机内拼接选项
-`photoStitching`显示当前机内拼接设置值**
+`photoStitching`显示当前机内拼接设置值
+`captureInterval`间隔拍照时间
+`captureIntervalSupport`间隔拍照支持的时间范围
+`captureMode`拍摄模式
+`_videoType`视频子模式
+`_videoTypeSupport`视频子模式列表
+`_timelapseResolution`延时摄影分辨率
+`_timelapseResolutionSupport`可用的延时摄影分辨率列表
+`_timelapseInterval`延时摄影的间隔时间，单位为毫秒
+`_timelapseIntervalSupport`可用延时摄影的时间列表
+`exposureProgram`曝光模式，1代表手动Manual，2自动NormalProgram，4快门优先ShutterPriority，9ISO优先ISOPriority
+`exposureDelay`曝光延迟时间，启动拍摄后延迟一定时间后再曝光
+`exposureDelaySupport`列出支持的曝光延迟时间
+`_topBottomCorrection`照片水平校正开关
+`whiteBalance`当前白平衡的模式名称
+`whiteBalanceSupport`列出支持的白平衡设置值
+`_dateTime`时间格式 "YYYY:MM:DD HH:MM:SS"，例如："2022:05:06 17:56:15"
+`_MuteEnable`静音设置，0为不静音，1为静音
+`_batteryCapacity`"powerType": 0 充电状态，0表示未充电，1表示正在充电
+"powerLevel": 100 电量百分比 100表示100%，0表示没电池
+`_sysTimestamp`系统时间戳，单位为us**
 ***无需每次请求都附带所有项目，根据需要即可***
 
 ### 拍照
@@ -361,7 +522,7 @@ X-XSRF-Protected: 1
 - 使用`camera.startCapture`开始录制视频
 ```
 {
-    "name":"camera.stopCapture"
+    "name":"camera.startCapture"
 }
 ```
 
@@ -390,3 +551,55 @@ X-XSRF-Protected: 1
 	}
 }
 ```
+
+#### startTimelapse
+
+1. timelapse拍照之前需要设置timelapse模式
+
+```
+{
+    "name":"camera.setOptions",
+    "parameters":{
+        "options":{
+            "captureMode":"video",
+            "_videoType":"timelapse",
+            "_timelapseInterval":1000
+        }
+    }
+}
+```
+
+2. 开始拍摄
+
+```
+{
+    "name":"camera.startCapture"
+}
+```
+
+#### stopTimelapse
+
+- 使用`camera.stopCapture`停止录制
+```
+{
+    "name":"camera.stopCapture"
+}
+```
+正确返回结果如下，其中包含`fileUrls`可以用来下载视频：
+```
+{
+	"name": "camera.stopCapture",
+	"state": "done",
+	"results": {
+		"fileUrls": [
+			"http://192.168.42.1:80/DCIM/Camera01/VID_20180106_172302_10_005.mp4",
+			"http://192.168.42.1:80/DCIM/Camera01/VID_20180106_172302_00_005.mp4"
+		],
+		"_localFileUrls": [
+			"/DCIM/Camera01/VID_20180106_172302_10_005.mp4",
+			"/DCIM/Camera01/VID_20180106_172302_00_005.mp4"
+		]
+	}
+}
+```
+

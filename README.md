@@ -4,7 +4,7 @@
 
 ### Overview
 **Insta360 OSC is implemented based on [Google OSC](https://developers.google.com/streetview/open-spherical-camera)**
-**Note** When your client connected to the AP of Insta360 ONE X/ONE  R ，the ip address of the camera is：`192.168.42.1`
+**Note** When your client connected to the AP of Insta360 ONE X、X2、X3、ONE R、ONE RS ，the ip address of the camera is：`192.168.42.1`
 **Strongly recomended** ： Never send  `osc/commands` request before you get the response of the previous one
 
 - HTTP Header required
@@ -87,10 +87,33 @@ X-XSRF-Protected: 1
       "optionNames": [
           "iso",
           "isoSupport",
-          "hdrSupport",
+    "shutterSpeed",
+    "shutterSpeedSupport",
           "hdr",
+          "hdrSupport",
           "totalSpace",
-          "remainingSpace"
+          "remainingSpace",
+          "photoStitching",
+          "photoStitchingSupport",
+          "captureInterval",
+          "captureIntervalSupport",
+          "captureMode",
+          "_videoType",
+          "_videoTypeSupport",
+          "_timelapseResolution",
+          "_timelapseResolutionSupport",
+          "_timelapseInterval",
+          "_timelapseIntervalSupport",
+          "exposureProgram",
+          "exposureDelay",
+          "exposureDelaySupport",
+          "_topBottomCorrection",
+          "whiteBalance",
+          "whiteBalanceSupport",
+          "_dateTime",
+          "_MuteEnable",
+          "_batteryCapacity",
+          "_sysTimestamp"
       ]
   }
 }
@@ -99,16 +122,131 @@ X-XSRF-Protected: 1
 
 ```
 {
-  "results": {
-      "options": {
-           "iso": 200,
-           "isoSupport": [100, 200, 400, 800, 1600],
-           "hdrSupport":[hdr, off],
-           "hdr":"off",
-           "totalSpace":"31906594816",
-           "remainingSpace":"10597040128"
-      }
-  }
+    "name": "camera.getOptions",
+    "state": "done",
+    "results": {
+        "options": {
+            "iso": 100,
+            "isoSupport": [
+                0,
+                100,
+                125,
+                160,
+                200,
+                250,
+                320,
+                400,
+                500,
+                640,
+                800,
+                1000,
+                1250,
+                1600,
+                2000,
+                2500,
+                3200
+            ],
+            "shutterSpeed": 0.001000,
+            "shutterSpeedSupport": [
+                0,
+                120,
+                100,
+                80,
+                60,
+                50,
+                40,
+                30,
+                15,
+                8,
+                2,
+                1,
+                0.500000,
+                0.200000,
+                0.100000,
+                0.066660,
+                0.033330,
+                0.020000,
+                0.016660,
+                0.010000,
+                0.008330,
+                0.002000,
+                0.001000,
+                0.000500,
+                0.000250,
+                0.000125
+            ],
+            "hdr": "off",
+            "hdrSupport": [
+                "off",
+                "hdr"
+            ],
+            "totalSpace": 0,
+            "remainingSpace": 0,
+            "photoStitching": "none",
+            "photoStitchingSupport": [
+                "none",
+                "ondevice"
+            ],
+            "captureInterval": 3000,
+            "captureIntervalSupport": {
+                "minInterval": 3,
+                "maxInterval": 120
+            },
+            "captureMode": "image",
+            "_videoType": "normal",
+            "_videoTypeSupport": [
+                "normal",
+                "timelapse"
+            ],
+            "_timelapseResolution": "5.7K",
+            "_timelapseResolutionSupport": [
+                "5.7K",
+                "8K"
+            ],
+            "_timelapseInterval": 4000,
+            "_timelapseIntervalSupport": [
+                200,
+                500,
+                1000,
+                2000,
+                4000,
+                10000,
+                30000,
+                60000,
+                120000
+            ],
+            "exposureProgram": 2,
+            "exposureDelay": 0,
+            "exposureDelaySupport": [
+                0,
+                3,
+                5,
+                10,
+                15,
+                0
+            ],
+            "_topBottomCorrection": {
+                "_topBottomCorrection": 0
+            },
+            "whiteBalance": "auto",
+            "whiteBalanceSupport": [
+                "auto",
+                "incandescent",
+                "fluorescent",
+                "daylight",
+                "cloudy-daylight"
+            ],
+            "_dateTime": "2023:03:23 16:05:41",
+            "_MuteEnable": {
+                "_MuteEnable": 0
+            },
+            "_batteryCapacity": {
+                "powerType": 1,
+                "powerLevel": 100
+            },
+            "_sysTimestamp": 60427274
+        }
+    }
 }
 ```
 `camera.getOptions` response example (with error):
@@ -158,6 +296,26 @@ If the on-device stitching is supported, the response will be like below.. Other
 `remainingSpace`: remaining space in byte
 `photoStitchingSupport`: list of supported photoStitching modes
 `photoStitching`: current photoStitching mode
+`captureInterval`Interval photo time
+`captureIntervalSupport`Time Range Supported by Interval photo 
+`captureMode`capture mode
+`_videoType`video submode
+`_videoTypeSupport`list of video submodes
+`_timelapseResolution`timelapse resolution
+`_timelapseResolutionSupport`List of available timelapse resolutions
+`_timelapseInterval`timelapse interval in millisecond
+`_timelapseIntervalSupport`list of times available for timeLapse
+`exposureProgram`Exposure mode, 1 -> manual Manual, 2 -> automatic Normal Program, 4 -> shutter priority ShutterPriority, 9 -> ISO priority ISOPriority
+`exposureDelay`Exposure delay time, after starting shooting, delay for a certain period of time before exposing
+`exposureDelaySupport`List of supported exposure delay times
+`_topBottomCorrection`Photo Level Correction Switch
+`whiteBalance`The mode name of the current white balance
+`whiteBalanceSupport`List supported white balance settings
+`_dateTime`Time format "YYYY:MM:DD HH:MM:SS", for example: "2022:05:06 17:56:15"
+`_MuteEnable`Mute setting, 0 is no mute, 1 is mute
+`_batteryCapacity`"powerType": 0 charging status, 0 means not charging, 1 means charging "powerLevel": 100 battery percentage 100 means 100%, 0 means no battery
+`_sysTimestamp`System timestamp in microseconds(us)
+
 ***SetOptions/GetOptions allows you to query/set options as need, just put required options in the optionsName array***
 
 ### TakePicture
@@ -390,6 +548,56 @@ response on success：
 ```
 
 #### stopCapture
+
+- use `camera.stopCapture` to stop recording 
+```
+{
+    "name":"camera.stopCapture"
+}
+```
+Make a http request to download the video files via `fileUrls`：
+```
+{
+	"name": "camera.stopCapture",
+	"state": "done",
+	"results": {
+		"fileUrls": [
+			"http://192.168.42.1:80/DCIM/Camera01/VID_20180106_172302_10_005.mp4",
+			"http://192.168.42.1:80/DCIM/Camera01/VID_20180106_172302_00_005.mp4"
+		],
+		"_localFileUrls": [
+			"/DCIM/Camera01/VID_20180106_172302_10_005.mp4",
+			"/DCIM/Camera01/VID_20180106_172302_00_005.mp4"
+		]
+	}
+}
+```
+#### startTimelapse
+
+1. Timelapse mode needs to be set before taking pictures
+
+```
+{
+    "name":"camera.setOptions",
+    "parameters":{
+        "options":{
+            "captureMode":"video",
+            "_videoType":"timelapse",
+            "_timelapseInterval":1000
+        }
+    }
+}
+```
+
+2. Start capture
+
+```
+{
+    "name":"camera.startCapture"
+}
+```
+
+#### stopTimelapse
 
 - use `camera.stopCapture` to stop recording 
 ```
