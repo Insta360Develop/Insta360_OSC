@@ -409,7 +409,7 @@ response on error-state error，**This error often happens when camera is in  st
 
 
 #### check capture status
-- use `/osc/cammands/status` to check capture statu
+- use `/osc/commands/status` to check capture statu
 ```
 {
     "id": "001996"
@@ -431,7 +431,7 @@ response example:
 ***`completion 0.5` means the capture progress is 50% now***
 
 #### Get file url and download 
-- check `/osc/cammands/status` repeatedly (recommend once per second ) until `state` is  `done` in the response
+- check `/osc/commands/status` repeatedly (recommend once per second ) until `state` is  `done` in the response
 make a http request to download the file via `fileUrl` in the  `results` 
 ```
 {
