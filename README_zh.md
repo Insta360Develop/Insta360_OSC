@@ -389,7 +389,7 @@ X-XSRF-Protected: 1
 
 
 #### 查询status
-- 使用 `/osc/cammands/status` 查询当前命令的执行进度
+- 使用 `/osc/commands/status` 查询当前命令的执行进度
 ```
 {
     "id": "001996"
@@ -410,7 +410,7 @@ X-XSRF-Protected: 1
 ***`completion 0.5` 表示进度为50%***
 
 #### 获取地址并下载
-- 重复查询 `/osc/cammands/status` 直到 `state` 为 `done`
+- 重复查询 `/osc/commands/status` 直到 `state` 为 `done`
 使用 `results` 结果中的 `fileUrl` 来下载文件
 ```
 {
