@@ -5,7 +5,7 @@
 ### Overview
 **Insta360 OSC is implemented based on [Google OSC](https://developers.google.com/streetview/open-spherical-camera)**
 **Note** When your client connected to the AP of Insta360 ONE X、X2、X3、ONE R、ONE RS ，the ip address of the camera is：`192.168.42.1`
-**Strongly recomended** ： Never send  `osc/commands` request before you get the response of the previous one
+**Strongly recommended** ： Never send  `osc/commands` request before you get the response of the previous one
 
 - HTTP Header required
 ```
@@ -73,10 +73,10 @@ X-XSRF-Protected: 1
 
    
 
-- `state.batteryLevel`: batery level of the camera device, values in [0,1]
+- `state.batteryLevel`: battery level of the camera device, values in [0,1]
 - `state.storageUri`: the storage path where photos are saved.
 
- ***Remmber to send  request to `/osc/info` 、`/osc/state` before starting take picture***
+ ***Remember to send  request to `/osc/info` 、`/osc/state` before starting to take picture***
 
 - Use `camera.getOptions` command to get options and features of the camera device. `photoStitchingSupport` and `photoStitching` are newly added options to tell if the camera device support ondevice-stitching.
 `camera.getOptions` request example：
@@ -275,7 +275,7 @@ After successfully connected to the camera，execute  `camera.getOptions` to kno
 }
 ```
 
-If the on-device stitching is supported, the response will be like below.. Otherwise, the response may contain error or `photoStitchingSupport` only has value `none`.
+If the on-device stitching is supported, the response will be like below. Otherwise, the response may contain error or `photoStitchingSupport` only has value `none`.
 
 ```
 {
@@ -409,13 +409,13 @@ response on error-state error，**This error often happens when camera is in  st
 
 
 #### check capture status
-- use `/osc/commands/status` to check capture statu
+- use `/osc/commands/status` to check capture status
 ```
 {
     "id": "001996"
 }
 ```
-`id` idendifies the capture task
+`id` identifies the capture task
 response example:
 ```
 {
