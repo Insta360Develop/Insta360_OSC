@@ -4,7 +4,7 @@
 
 ### Overview
 **Insta360 OSC is implemented based on [Google OSC](https://developers.google.com/streetview/open-spherical-camera)**
-**Note** When your client connected to the AP of Insta360 ONE X、X2、X3、ONE R、ONE RS ，the ip address of the camera is：`192.168.42.1`
+**Note** When your client connected to the AP of Insta360 ONE X、ONE X2、ONE R、ONE RS、X3、X4 ，the ip address of the camera is：`192.168.42.1`
 **Strongly recommended** ： Never send  `osc/commands` request before you get the response of the previous one
 
 - HTTP Header required
