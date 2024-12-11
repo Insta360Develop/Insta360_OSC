@@ -1,7 +1,7 @@
 # Insta360 OSC 使用文档
 ### 概览
 **本文档基于[Google OSC](https://developers.google.com/streetview/open-spherical-camera)规范编写**
-使用Insta360 ONE X、X2、X3、ONE R、ONE RS时，设备连接到相机WiFi热点，此时相机的IP地址：192.168.42.1
+使用Insta360 ONE X、ONE X2、ONE R、ONE RS、X3、X4时，设备连接到相机WiFi热点，此时相机的IP地址：192.168.42.1
 **强烈建议** ： 所有 `osc/commands` 命令收到回复之后再发送下一条
 
 - 发送请求时请附带请求头
