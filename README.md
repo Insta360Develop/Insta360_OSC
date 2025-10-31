@@ -203,17 +203,17 @@ X-XSRF-Protected: 1
                 "5.7K",
                 "8K"
             ],
-            "_timelapseInterval": 4000,
+            "_timelapseInterval": 4,
             "_timelapseIntervalSupport": [
-                200,
-                500,
-                1000,
-                2000,
-                4000,
-                10000,
-                30000,
-                60000,
-                120000
+                0.2,
+                0.5,
+                1,
+                2,
+                4,
+                10,
+                30,
+                60,
+                120
             ],
             "exposureProgram": 2,
             "exposureDelay": 0,
@@ -583,7 +583,7 @@ Make a http request to download the video files via `fileUrls`：
         "options":{
             "captureMode":"video",
             "_videoType":"timelapse",
-            "_timelapseInterval":1000
+            "_timelapseInterval":1
         }
     }
 }
